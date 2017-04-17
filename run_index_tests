@@ -1,0 +1,82 @@
+--This file will run the index tests.
+-- First set profile
+SET profiling = 1;
+
+-- Lets run some queries and get times
+-- query 1 will be on nfl_players
+SELECT * FROM nfl_players WHERE name LIKE '%son';
+show profile;
+
+-- query 2 will bon Stats
+-- query will pull numbers that involve tds
+select Stats.year, Stats.nfl_player_id, nfl_players.name, Stats.passing_tds, Stats.receiving_yds, Stats.rushing_tds FROM Stats INNER JOIN nfl_players ON Stats.nfl_player_id=nfl_players.nfl_player_id WHERE passing_tds > '3';
+show profile;
+
+SELECT Stats.year, Stats.nfl_player_id, nfl_players.name, Stats.passing_tds, Stats.receiving_yds, Stats.rushing_tds
+FROM Stats INNER JOIN nfl_players ON Stats.nfl_player_id=nfl_players.nfl_player_id
+WHERE rushing_tds > '3';
+show profile;
+
+SELECT Stats.year, Stats.nfl_player_id, nfl_players.name, Stats.passing_tds, Stats.receiving_yds, Stats.rushing_tds, Stats.rushing_yds  
+FROM Stats INNER JOIN nfl_players ON Stats.nfl_player_id=nfl_players.nfl_player_id
+WHERE rushing_yds > '90';
+show profile;
+
+-- Index 1
+-- Table - nfl_players
+-- Index on name
+CREATE INDEX nfl_player_name_idx
+ON nfl_players (name);
+
+-- Index 2
+-- Table - Stats
+-- Index on Year
+CREATE INDEX Stats_year_idx
+ON Stats (year);
+
+-- Index 3
+--Table - Stats
+-- Index on passing_tds
+CREATE INDEX Stats_passing_tds_idx
+ON Stats (passing_tds);
+
+-- Index 4
+-- Table - Stats
+-- Index on receiving_tds
+CREATE INDEX Stats_receiving_tds_idx
+ON Stats (receiving_tds);
+
+-- Index 5
+-- Table - Stats
+-- Index on receiving_yds
+CREATE INDEX Stats_receiving_yds_idx
+ON Stats (receiving_yds);
+
+-- Index 6
+-- Table - Stats
+-- Index on rushing_tds
+CREATE INDEX Stats_rushing_tds_idx
+ON Stats (rushing_tds);
+
+-- Index 7
+-- Table - stats
+-- Index on rushing_yds
+CREATE INDEX Stats_rushing_yds_idx
+ON Stats (rushing_yds);
+
+
+SELECT * FROM nfl_players WHERE name LIKE '%son';
+show profile;
+
+select Stats.year, Stats.nfl_player_id, nfl_players.name, Stats.passing_tds, Stats.receiving_yds, Stats.rushing_tds FROM Stats INNER JOIN nfl_players ON Stats.nfl_player_id=nfl_players.nfl_player_id WHERE passing_tds > '3';
+show profile;
+
+SELECT Stats.year, Stats.nfl_player_id, nfl_players.name, Stats.passing_tds, Stats.receiving_yds, Stats.rushing_tds
+FROM Stats INNER JOIN nfl_players ON Stats.nfl_player_id=nfl_players.nfl_player_id
+WHERE rushing_tds > '3';
+show profile;
+
+SELECT Stats.year, Stats.nfl_player_id, nfl_players.name, Stats.passing_tds, Stats.receiving_yds, Stats.rushing_tds, Stats.rushing_yds
+FROM Stats INNER JOIN nfl_players ON Stats.nfl_player_id=nfl_players.nfl_player_id
+WHERE rushing_yds > '90';
+show profile;
